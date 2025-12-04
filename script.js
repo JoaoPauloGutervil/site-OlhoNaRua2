@@ -1,90 +1,5 @@
 // ===================================
-//  MENU RESPONSIVO E ACESSÍVEL
-// ===================================
-const menuBtn = document.getElementById("menu-btn");
-const menu = document.getElementById("menu");
-
-if (menuBtn && menu) {
-  menuBtn.setAttribute("aria-expanded", "false");
-  menuBtn.setAttribute("aria-controls", "menu");
-
-  const toggleMenu = () => {
-    const aberto = menu.classList.toggle("ativo");
-    menu.style.display = aberto ? "flex" : "none";
-    menuBtn.setAttribute("aria-expanded", aberto ? "true" : "false");
-
-    if (aberto) {
-      const firstLink = menu.querySelector("a");
-      if (firstLink) firstLink.focus();
-    }
-  };
-
-  menuBtn.addEventListener("click", toggleMenu);
-
-  menuBtn.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      toggleMenu();
-    }
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && menu.classList.contains("ativo")) {
-      menu.classList.remove("ativo");
-      menu.style.display = "none";
-      menuBtn.setAttribute("aria-expanded", "false");
-      menuBtn.focus();
-    }
-  });
-}
-
-
-
-// ===================================
-//  ROLAGEM SUAVE ENTRE SEÇÕES
-// ===================================
-document.querySelectorAll('a[href^="#"]').forEach(link => {
-  link.addEventListener("click", e => {
-    const target = document.querySelector(link.getAttribute("href"));
-    if (target) {
-      e.preventDefault();
-      target.scrollIntoView({ behavior: "smooth" });
-      target.focus({ preventScroll: true });
-    }
-  });
-});
-
-
-
-// ===================================
-//  PEGAR LOCALIZAÇÃO (GEOLOCALIZAÇÃO)
-// ===================================
-let lat = null;
-let lng = null;
-
-const btnLocalizacao = document.getElementById("btnLocalizacao");
-
-if (btnLocalizacao) {
-  btnLocalizacao.addEventListener("click", () => {
-    navigator.geolocation.getCurrentPosition(
-      pos => {
-        lat = pos.coords.latitude;
-        lng = pos.coords.longitude;
-
-        const campoLocalizacao = document.getElementById("localizacao");
-        campoLocalizacao.value = `Lat: ${lat.toFixed(5)} | Lng: ${lng.toFixed(5)}`;
-      },
-      () => {
-        alert("⚠️ Não foi possível obter sua localização.");
-      }
-    );
-  });
-}
-
-
-
-// ===================================
-//  VALIDAR FORMULÁRIO DE OCORRÊNCIA + SALVAR NO MAPA
+//  VALIDAR FORMULÁRIO DE OCORRÊNCIA + SALVAR NO MAPA (COM IMAGEM)
 // ===================================
 const formOcorrencia = document.getElementById("formOcorrencia");
 
@@ -100,6 +15,7 @@ if (formOcorrencia) {
     const descricao = document.getElementById("descricao");
     const localizacao = document.getElementById("localizacao");
     const contato = document.getElementById("contato");
+    const fotoInput = document.getElementById("foto");
 
     let firstInvalid = null;
 
@@ -129,104 +45,50 @@ if (formOcorrencia) {
       return;
     }
 
-    // Verificar se a geolocalização foi usada
+    // Verificar se geolocalização foi usada
     if (!lat || !lng) {
       alert("⚠️ Clique em 'Usar minha localização' antes de registrar.");
       return;
     }
 
-    // Criar objeto da ocorrência
-    const novaOcorrencia = {
-      tipo: tipo.value,
-      descricao: descricao.value,
-      local: localizacao.value,
-      lat: lat,
-      lng: lng
+    // Salvar IMAGEM (se foi enviada)
+    const salvarOcorrencia = (imagemBase64 = null) => {
+      const novaOcorrencia = {
+        tipo: tipo.value,
+        descricao: descricao.value,
+        local: localizacao.value,
+        lat: lat,
+        lng: lng,
+        imagemBase64: imagemBase64   // <-- AGORA COM IMAGEM
+      };
+
+      // Salvar no localStorage
+      const ocorrencias = JSON.parse(localStorage.getItem("ocorrencias")) || [];
+      ocorrencias.push(novaOcorrencia);
+      localStorage.setItem("ocorrencias", JSON.stringify(ocorrencias));
+
+      if (success) {
+        success.textContent = "✅ Ocorrência registrada e enviada para o mapa!";
+        success.classList.add("form-success");
+      }
+
+      formOcorrencia.reset();
+      lat = null;
+      lng = null;
     };
 
-    // Salvar no localStorage
-    const ocorrencias = JSON.parse(localStorage.getItem("ocorrencias")) || [];
-    ocorrencias.push(novaOcorrencia);
-    localStorage.setItem("ocorrencias", JSON.stringify(ocorrencias));
+    // Se tem arquivo → converter para Base64
+    if (fotoInput.files.length > 0) {
+      const arquivo = fotoInput.files[0];
+      const reader = new FileReader();
 
-    if (success) {
-      success.textContent = "✅ Ocorrência registrada e enviada para o mapa!";
-      success.classList.add("form-success");
+      reader.onload = () => salvarOcorrencia(reader.result);
+      reader.readAsDataURL(arquivo);
+    } 
+    // Se não tem imagem → salvar normal
+    else {
+      salvarOcorrencia(null);
     }
 
-    // Limpar
-    formOcorrencia.reset();
-    lat = null;
-    lng = null;
   });
 }
-
-
-
-// ===================================
-//  VALIDAR LOGIN
-// ===================================
-const loginForm = document.getElementById("loginForm");
-
-if (loginForm) {
-  loginForm.addEventListener("submit", function (event) {
-    event.preventDefault();
-
-    const email = document.getElementById("email");
-    const senha = document.getElementById("senha");
-    const erro = document.getElementById("loginError");
-
-    erro.textContent = "";
-    erro.classList.remove("form-success");
-    erro.classList.add("form-error");
-
-    const toggleSenha = document.getElementById("toggleSenha");
-    if (toggleSenha) {
-      toggleSenha.onclick = () => {
-        senha.type = senha.type === "password" ? "text" : "password";
-      };
-    }
-
-    if (!email.value || !senha.value) {
-      erro.textContent = "Preencha todos os campos para continuar.";
-      email.focus();
-      return;
-    }
-
-    if (!email.value.includes("@")) {
-      erro.textContent = "Insira um e-mail válido.";
-      email.focus();
-      return;
-    }
-
-    erro.textContent = "Login realizado com sucesso!";
-    erro.classList.remove("form-error");
-    erro.classList.add("form-success");
-
-    loginForm.reset();
-  });
-}
-
-
-
-// ===================================
-//  ACCORDION (FAQ)
-// ===================================
-const accordionBtns = document.querySelectorAll(".accordion-btn");
-
-accordionBtns.forEach(btn => {
-  btn.setAttribute("aria-expanded", "false");
-
-  btn.addEventListener("click", () => {
-    const content = btn.nextElementSibling;
-    const aberto = content.style.display === "block";
-
-    accordionBtns.forEach(b => {
-      b.setAttribute("aria-expanded", "false");
-      b.nextElementSibling.style.display = "none";
-    });
-
-    btn.setAttribute("aria-expanded", aberto ? "false" : "true");
-    content.style.display = aberto ? "none" : "block";
-  });
-});
