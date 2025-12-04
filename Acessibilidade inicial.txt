@@ -1,0 +1,37 @@
+CHECKLIST DE ACESSIBILIDADE - OLHO NA RUA
+
+🔹 Estrutura
+✅ Uso de HTML semântico (header, nav, main, footer)
+✅ Cada página possui <title> descritivo e único
+✅ Linguagem definida no <html lang="pt-BR">
+
+🔹 Navegação
+✅ Menu visível em todas as páginas
+✅ Pode ser navegado apenas com teclado (Tab e Enter)
+
+🔹 Formulários
+✅ Todos os campos possuem <label for="...">
+✅ Campos obrigatórios identificados com “required”
+✅ Mensagens de feedback acessíveis (ex: role="status")
+
+🔹 Imagens e Mídias
+✅ Todas as imagens possuem atributo alt
+✅ Ícones e imagens decorativas são ignoradas por leitores de tela
+⚠️ Não há vídeos com legendas (não aplicável neste estágio)
+
+🔹 Cores e Contraste
+✅ Texto e fundo possuem contraste mínimo 4.5:1
+✅ Foco visível (outline branco ao navegar com Tab)
+✅ Paleta padronizada no :root (variáveis CSS)
+
+🔹 Responsividade
+✅ Layout mobile-first
+✅ Testado em resoluções 360px, 768px e 1024px
+
+🔹 Testes
+✅ Verificado com extensão Wave / Lighthouse (nível básico)
+⚠️ Aguardando revisão completa de acessibilidade
+
+Versão: Alpha 1.0
+Data: 09/10/2025
+Autor: João Paulo Ferreira Gutervil

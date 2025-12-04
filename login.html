@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Olho na Rua</title>
+  <link rel="stylesheet" href="Style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="hero hero-login">
+    <div class="hero-content">
+      <h1>Acesso de Gestores</h1>
+      <p>Entre para acompanhar e gerenciar as ocorrências registradas.</p>
+    </div>
+  </header>
+
+  <nav aria-label="Navegação principal">
+    <a href="index.html">Início</a>
+    <a href="sobre.html">Sobre</a>
+    <a href="contato.html">Contato</a>
+    <a href="registrar.html">Registrar</a>
+    <a href="login.html" aria-current="page">Login</a>
+    <a href="mapa.html" title="Mapa de Ocorrências">Mapa</a>
+  </nav>
+
+  <main>
+    <div class="login-main"> 
+      <form id="loginForm" aria-label="Formulário de login" class="form-card">
+
+        <h2>Acessar sua conta</h2>
+        <p class="login-desc">Entre com suas credenciais para continuar.</p>
+
+        <label for="email">E-mail:</label>
+        <input type="email" id="email" name="email" required placeholder="exemplo@dominio.com">
+
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" name="senha" required placeholder="Digite sua senha">
+
+        <p id="loginError" class="form-error" aria-live="polite"></p>
+
+        <button type="submit">Entrar</button>
+
+        <a href="#" class="link-secundario">Esqueci minha senha</a>
+        <p id="loginStatus" role="status" aria-live="polite"></p>
+     </form>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Olho na Rua — Todos os direitos reservados</p>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

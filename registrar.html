@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrar Ocorrência | Olho na Rua</title>
+  <link rel="stylesheet" href="Style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Skip link: acessível por teclado -->
+  <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
+
+  <!-- Header com landmark -->
+  <header class="hero hero-registrar" role="banner">
+    <div class="hero-content">
+      <h1>Registrar Ocorrência</h1>
+      <p>Relate um problema urbano e ajude a melhorar sua cidade.</p>
+    </div>
+  </header>
+
+  <!-- Navegação com ARIA -->
+  <nav aria-label="Navegação principal" role="navigation">
+    <a href="index.html">Início</a>
+    <a href="sobre.html">Sobre</a>
+    <a href="contato.html">Contato</a>
+    <a href="registrar.html" aria-current="page">Registrar</a>
+    <a href="login.html">Login</a>
+    <a href="mapa.html" title="Mapa de Ocorrências">Mapa</a>
+  </nav>
+
+  <!-- Conteúdo principal -->
+  <main id="main-content" class="form-container" role="main">
+    <form id="formOcorrencia" class="form-card" aria-label="Formulário de registro de ocorrência" novalidate>
+      <label for="tipo">Tipo de Problema:</label>
+      <select id="tipo" name="tipo" required aria-required="true" aria-describedby="erro-tipo">
+        <option value="">Selecione...</option>
+        <option value="buraco">Buraco na rua</option>
+        <option value="iluminacao">Iluminação pública</option>
+        <option value="lixo">Lixo acumulado</option>
+        <option value="outro">Outro</option>
+      </select>
+      <div id="erro-tipo" class="form-error" aria-live="polite"></div>
+
+      <label for="descricao">Descrição:</label>
+      <textarea id="descricao" name="descricao" rows="4" required aria-required="true"
+        aria-describedby="erro-descricao" placeholder="Descreva o problema..."></textarea>
+      <div id="erro-descricao" class="form-error" aria-live="polite"></div>
+
+      <label for="foto">Adicione foto ou vídeo (opcional):</label>
+      <input type="file" id="foto" accept="image/*,video/*">
+
+      <label for="nome">Nome (opcional):</label>
+      <input type="text" id="nome" name="nome" placeholder="Seu nome">
+
+      <label for="contato">Contato (opcional):</label>
+      <input type="email" id="contato" name="contato"
+        aria-describedby="erro-contato" placeholder="Seu email ou telefone">
+      <div id="erro-contato" class="form-error" aria-live="polite"></div>
+
+      <label for="localizacao">Localização:</label>
+      <input type="text" id="localizacao" required placeholder="Rua, número, bairro...">
+      <button type="button" id="btnLocalizacao">Usar minha localização</button>
+      <p id="erro-localizacao" class="form-error"></p>
+
+      <button type="submit">Enviar Ocorrência</button>
+
+      <!-- Feedback acessível de sucesso -->
+      <div id="form-success" class="form-success" role="status" aria-live="polite"></div>
+    </form>
+
+    <div id="preview" class="preview" aria-live="polite"></div>
+  </main>
+
+  <footer role="contentinfo">
+    <p>&copy; 2025 Olho na Rua — Todos os direitos reservados</p>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
